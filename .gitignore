@@ -1,0 +1,90 @@
+# ==============================
+# Python / Django
+# ==============================
+
+__pycache__/
+*.py[cod]
+*$py.class
+
+*.log
+*.pot
+
+# Django stuff
+*.sqlite3
+db.sqlite3
+
+# Django migrations (optional)
+*/migrations/*
+!*/migrations/__init__.py
+
+# Django static files
+staticfiles/
+
+# ==============================
+# Virtual Environment
+# ==============================
+
+venv/
+env/
+ENV/
+.virtualenv/
+
+# ==============================
+# Environment Variables
+# ==============================
+
+.env
+.env.local
+.env.production
+
+# ==============================
+# Node / Frontend
+# ==============================
+
+node_modules/
+dist/
+build/
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ==============================
+# IDE / Editor Files
+# ==============================
+
+.vscode/
+.idea/
+
+*.swp
+*.swo
+
+# ==============================
+# OS Files
+# ==============================
+
+.DS_Store
+Thumbs.db
+
+# ==============================
+# Coverage / Testing
+# ==============================
+
+.coverage
+coverage/
+htmlcov/
+
+# ==============================
+# Docker
+# ==============================
+
+*.pid
+*.seed
+
+# ==============================
+# Misc
+# ==============================
+
+*.bak
+*.tmp
+*.cache
