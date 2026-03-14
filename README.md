@@ -6,8 +6,7 @@
 
 ## 🎥 Demo Video
 
-> **[Will be added soon]**
-
+(https://youtu.be/fqXI6EaEpX0?si=dBNUUetfyO7wFEKB)
 ---
 
 ## 📌 Table of Contents
