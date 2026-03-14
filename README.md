@@ -1,1 +1,1 @@
-"# CoreInventory-Real-Time-Inventory-Management-Platform" 
+# CoreInventory-Real-Time-Inventory-Management-Platform
