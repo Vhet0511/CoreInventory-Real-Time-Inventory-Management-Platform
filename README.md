@@ -47,7 +47,6 @@ Whether you're managing incoming goods from vendors, dispatching orders to custo
 
 ### 🔐 Authentication
 - User Sign Up / Login
-- OTP-based Password Reset
 - Redirects to Inventory Dashboard on successful login
 
 ### 📊 Dashboard
@@ -105,11 +104,9 @@ Create and manage products with:
 
 | Layer | Technology |
 |-------|-----------|
-| **Frontend** | [Will be added soon] |
-| **Backend** | [Will be added soon] |
-| **Database** | [Will be added soon] |
-| **Authentication** | [Will be added soon] |
-| **Hosting / Deployment** | [Will be added soon] |
+| **Frontend** | HTML,CSS, JS, Talwind CSS|
+| **Backend** | Python (Django) |
+| **Database** | SQL (PostgreSQL) |
 | **Version Control** | Git & GitHub |
 | **Design / Mockup** | Excalidraw |
 
