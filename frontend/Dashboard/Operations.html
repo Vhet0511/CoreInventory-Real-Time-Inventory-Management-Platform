@@ -1,41 +1,44 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Dashboard
-        </title>
-    </head>
-    <body>
-       <header>
-        <h1>
-            Dashboard
-            <nav>
-                <a href ="#Dashborad">Dashboard</a>
-                <a href="#Stock">Stock</a>
-                <a href="#Move History">Move History</a>
-                <a href="Settings">Settings</a>          
-            </nav>
-        </h1>
-        </header>
-        <main class=""Dashboard">
-        <div class="card">
-            <h2>Recepiet</h2>
-            <p>4 to receive</p>
-      <p>1 Late</p>
-      <p>6 operations</p>
-    </div>
+  <head>
+    <link rel="stylesheet" href="dashboard.css" />
+    <title>Dashboard</title>
+  </head>
+  <body>
+    <header>
+      <h1>Dashboard</h1>
+      <nav>
+        <a href="#Dashboard">Dashboard</a>
+        <a href="#Operation">Operation</a>
+        <a href="#Stock">Stock</a>
+        <a href="#MoveHistory">Move History</a>
+        <a href="#Settings">Settings</a>
+      </nav>
+    </header>
 
-    <div class="card">
-      <h2>Delivery</h2>
-      <p>4 to deliver</p>
-      <p>1 Late</p>
-      <p>2 waiting</p>
-      <p>6 operations</p>
+    <main class="Dashboard">
 
-      <div class="Adjustment">
-      <h2>Adjustment</h2>
-      
-        </div>
-        </main>
-        
-    </body>
+      <!-- Receipt Card -->
+      <div class="card receipt">
+        <h2>Receipt</h2>
+        <p>4 to receive</p>
+        <p>1 Late</p>
+        <p>6 operations</p>
+      </div>
+        <!-- Delivery Card -->
+      <div class="card delivery">
+        <h2>Delivery</h2>
+        <p>4 to deliver</p>
+        <p>1 Late</p>
+        <p>2 waiting</p>
+        <p>6 operations</p>
+      </div>
+
+      <!-- Adjustment Card -->
+      <div class="card adjustment">
+        <h2>Adjustment</h2>
+      </div>
+
+    </main>
+  </body>
 </html>
