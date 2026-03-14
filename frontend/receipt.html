@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Create Delivery</title>
+<title>Receipt - CoreInventory</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -17,6 +17,8 @@ font-family:'DM Sans',sans-serif;
 background:#f0f4ff;
 color:#111827;
 }
+
+/* HEADER */
 
 header{
 background:#1a3a6b;
@@ -68,6 +70,8 @@ align-items:center;
 justify-content:center;
 }
 
+/* PAGE */
+
 main{
 padding:32px 28px;
 }
@@ -78,6 +82,8 @@ font-weight:700;
 color:#1e3a5f;
 margin-bottom:20px;
 }
+
+/* FORM CARD */
 
 .form-card{
 background:white;
@@ -122,30 +128,16 @@ button:hover{
 background:#1e40af;
 }
 
-.table-box{
-margin-top:40px;
-background:white;
-border-radius:12px;
-border:1px solid #dbeafe;
-padding:20px;
-max-width:700px;
+.success-msg{
+margin-top:10px;
+color:#16a34a;
+font-size:13px;
 }
 
-table{
-width:100%;
-border-collapse:collapse;
-}
-
-th,td{
-padding:10px;
-text-align:left;
-border-bottom:1px solid #eee;
-font-size:14px;
-}
-
-th{
-color:#1e3a5f;
-font-weight:700;
+.error-msg{
+margin-top:10px;
+color:#dc2626;
+font-size:13px;
 }
 
 </style>
@@ -158,9 +150,13 @@ font-weight:700;
 <nav>
 
 <a href="dashboard.html">Dashboard</a>
+
 <a href="operations.html" class="active">Operations</a>
+
 <a href="stock.html">Stock</a>
-<a href="#">Move History</a>
+
+<a href="move-history.html">Move History</a>
+
 <a href="#">Settings</a>
 
 </nav>
@@ -172,53 +168,28 @@ font-weight:700;
 
 <main>
 
-<div class="page-title">Create Delivery</div>
+<div class="page-title">Create Receipt</div>
 
 <div class="form-card">
 
 <div class="form-group">
 <label>Customer Name</label>
-<input id="customerName">
+<input id="customerName" placeholder="Enter customer name">
 </div>
 
 <div class="form-group">
 <label>Product ID</label>
-<input id="productId" type="number">
+<input id="productId" type="number" placeholder="Enter product ID">
 </div>
 
 <div class="form-group">
 <label>Quantity</label>
-<input id="quantity" type="number">
+<input id="quantity" type="number" placeholder="Enter quantity">
 </div>
 
-<button onclick="createDelivery()">Create Delivery</button>
+<button onclick="createReceipt()">Create Receipt</button>
 
 <div id="message"></div>
-
-</div>
-
-
-<div class="table-box">
-
-<h3 style="margin-bottom:15px;color:#1e3a5f">Delivery History</h3>
-
-<table>
-
-<thead>
-<tr>
-<th>Reference</th>
-<th>Customer</th>
-<th>Product</th>
-<th>Qty</th>
-<th>Date</th>
-</tr>
-</thead>
-
-<tbody id="historyTable">
-
-</tbody>
-
-</table>
 
 </div>
 
@@ -227,38 +198,13 @@ font-weight:700;
 
 <script>
 
-function loadHistory(){
-
-const history=JSON.parse(localStorage.getItem("deliveries")||"[]")
-
-const table=document.getElementById("historyTable")
-
-table.innerHTML=""
-
-history.forEach(d=>{
-
-table.innerHTML+=`
-<tr>
-<td>${d.reference}</td>
-<td>${d.customer}</td>
-<td>${d.product}</td>
-<td>${d.quantity}</td>
-<td>${d.date}</td>
-</tr>
-`
-
-})
-
-}
-
-
-function createDelivery(){
+function createReceipt(){
 
 const customer=document.getElementById("customerName").value
 const product=document.getElementById("productId").value
 const qty=document.getElementById("quantity").value
 
-fetch("http://127.0.0.1:8000/api/deliveries/create/",{
+fetch("http://127.0.0.1:8000/api/receipts/create/",{
 method:"POST",
 headers:{
 "Content-Type":"application/json"
@@ -271,38 +217,49 @@ quantity:Number(qty)
 })
 .then(()=>{
 
-const delivery={
-reference:"DEL-"+Date.now(),
-customer:customer,
-product:product,
-quantity:qty,
-date:new Date().toLocaleDateString()
-}
+document.getElementById("message").innerHTML = `
+<div style="margin-top:20px;background:white;border:1.5px solid #dbeafe;border-radius:12px;padding:18px;max-width:450px;box-shadow:0 2px 8px rgba(26,58,107,0.07);">
 
-let history=JSON.parse(localStorage.getItem("deliveries")||"[]")
+<div style="font-size:15px;font-weight:700;color:#1e3a5f;margin-bottom:12px;">
+Receipt Created
+</div>
 
-history.push(delivery)
+<div style="margin-bottom:10px">
+<label style="font-size:12px;color:#6b7280;font-weight:600">Customer Name</label>
+<div style="padding:8px 10px;border:1px solid #dbeafe;border-radius:8px;background:#f9fbff;font-size:13px;">
+${customer}
+</div>
+</div>
 
-localStorage.setItem("deliveries",JSON.stringify(history))
+<div style="margin-bottom:10px">
+<label style="font-size:12px;color:#6b7280;font-weight:600">Product ID</label>
+<div style="padding:8px 10px;border:1px solid #dbeafe;border-radius:8px;background:#f9fbff;font-size:13px;">
+${product}
+</div>
+</div>
 
-document.getElementById("message").innerHTML="Delivery Created"
+<div style="margin-bottom:10px">
+<label style="font-size:12px;color:#6b7280;font-weight:600">Quantity</label>
+<div style="padding:8px 10px;border:1px solid #dbeafe;border-radius:8px;background:#f9fbff;font-size:13px;">
+${qty}
+</div>
+</div>
+
+</div>
+`
 
 document.getElementById("customerName").value=""
 document.getElementById("productId").value=""
 document.getElementById("quantity").value=""
 
-loadHistory()
-
 })
 .catch(()=>{
-document.getElementById("message").innerHTML="Error creating delivery"
+document.getElementById("message").innerHTML=
+"<div class='error-msg'>Error creating receipt</div>"
 })
 
 }
 
-loadHistory()
-
 </script>
-
 </body>
 </html>

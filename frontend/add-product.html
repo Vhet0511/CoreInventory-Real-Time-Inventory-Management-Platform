@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Create Delivery</title>
+<title>Add Product</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -128,7 +128,7 @@ background:white;
 border-radius:12px;
 border:1px solid #dbeafe;
 padding:20px;
-max-width:700px;
+max-width:750px;
 }
 
 table{
@@ -158,8 +158,8 @@ font-weight:700;
 <nav>
 
 <a href="dashboard.html">Dashboard</a>
-<a href="operations.html" class="active">Operations</a>
-<a href="stock.html">Stock</a>
+<a href="operations.html">Operations</a>
+<a href="stock.html" class="active">Stock</a>
 <a href="#">Move History</a>
 <a href="#">Settings</a>
 
@@ -169,54 +169,60 @@ font-weight:700;
 
 </header>
 
-
 <main>
 
-<div class="page-title">Create Delivery</div>
+<div class="page-title">Add Product</div>
 
 <div class="form-card">
 
 <div class="form-group">
-<label>Customer Name</label>
-<input id="customerName">
+<label>Product Name</label>
+<input id="name">
 </div>
 
 <div class="form-group">
-<label>Product ID</label>
-<input id="productId" type="number">
+<label>SKU</label>
+<input id="sku">
 </div>
 
 <div class="form-group">
-<label>Quantity</label>
-<input id="quantity" type="number">
+<label>Category ID</label>
+<input id="categoryId" type="number">
 </div>
 
-<button onclick="createDelivery()">Create Delivery</button>
+<div class="form-group">
+<label>Unit ID</label>
+<input id="unitId" type="number">
+</div>
+
+<div class="form-group">
+<label>Reorder Level</label>
+<input id="reorderLevel" type="number">
+</div>
+
+<button onclick="createProduct()">Add Product</button>
 
 <div id="message"></div>
 
 </div>
 
-
 <div class="table-box">
 
-<h3 style="margin-bottom:15px;color:#1e3a5f">Delivery History</h3>
+<h3 style="margin-bottom:15px;color:#1e3a5f">Product History</h3>
 
 <table>
 
 <thead>
 <tr>
-<th>Reference</th>
-<th>Customer</th>
-<th>Product</th>
-<th>Qty</th>
-<th>Date</th>
+<th>Name</th>
+<th>SKU</th>
+<th>Category</th>
+<th>Unit</th>
+<th>Reorder Level</th>
 </tr>
 </thead>
 
-<tbody id="historyTable">
-
-</tbody>
+<tbody id="productTable"></tbody>
 
 </table>
 
@@ -224,26 +230,25 @@ font-weight:700;
 
 </main>
 
-
 <script>
 
-function loadHistory(){
+function loadProducts(){
 
-const history=JSON.parse(localStorage.getItem("deliveries")||"[]")
+const products=JSON.parse(localStorage.getItem("products")||"[]")
 
-const table=document.getElementById("historyTable")
+const table=document.getElementById("productTable")
 
 table.innerHTML=""
 
-history.forEach(d=>{
+products.forEach(p=>{
 
 table.innerHTML+=`
 <tr>
-<td>${d.reference}</td>
-<td>${d.customer}</td>
-<td>${d.product}</td>
-<td>${d.quantity}</td>
-<td>${d.date}</td>
+<td>${p.name}</td>
+<td>${p.sku}</td>
+<td>${p.category}</td>
+<td>${p.unit}</td>
+<td>${p.reorder}</td>
 </tr>
 `
 
@@ -251,56 +256,61 @@ table.innerHTML+=`
 
 }
 
+function createProduct(){
 
-function createDelivery(){
+const name=document.getElementById("name").value
+const sku=document.getElementById("sku").value
+const category=document.getElementById("categoryId").value
+const unit=document.getElementById("unitId").value
+const reorder=document.getElementById("reorderLevel").value
 
-const customer=document.getElementById("customerName").value
-const product=document.getElementById("productId").value
-const qty=document.getElementById("quantity").value
-
-fetch("http://127.0.0.1:8000/api/deliveries/create/",{
+fetch("http://127.0.0.1:8000/api/products/create/",{
 method:"POST",
 headers:{
 "Content-Type":"application/json"
 },
 body:JSON.stringify({
-customer_name:customer,
-product_id:Number(product),
-quantity:Number(qty)
+name:name,
+sku:sku,
+category_id:Number(category),
+unit_id:Number(unit),
+reorder_level:Number(reorder)
 })
 })
 .then(()=>{
 
-const delivery={
-reference:"DEL-"+Date.now(),
-customer:customer,
-product:product,
-quantity:qty,
-date:new Date().toLocaleDateString()
+const product={
+name:name,
+sku:sku,
+category:category,
+unit:unit,
+reorder:reorder
 }
 
-let history=JSON.parse(localStorage.getItem("deliveries")||"[]")
+let history=JSON.parse(localStorage.getItem("products")||"[]")
 
-history.push(delivery)
+history.push(product)
 
-localStorage.setItem("deliveries",JSON.stringify(history))
+localStorage.setItem("products",JSON.stringify(history))
 
-document.getElementById("message").innerHTML="Delivery Created"
+document.getElementById("message").innerHTML="Product Added"
 
-document.getElementById("customerName").value=""
-document.getElementById("productId").value=""
-document.getElementById("quantity").value=""
+document.getElementById("name").value=""
+document.getElementById("sku").value=""
+document.getElementById("categoryId").value=""
+document.getElementById("unitId").value=""
+document.getElementById("reorderLevel").value=""
 
-loadHistory()
+loadProducts()
 
 })
 .catch(()=>{
-document.getElementById("message").innerHTML="Error creating delivery"
+document.getElementById("message").innerHTML="Error adding product"
 })
 
 }
 
-loadHistory()
+loadProducts()
 
 </script>
 
