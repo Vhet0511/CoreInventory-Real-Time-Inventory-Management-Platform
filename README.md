@@ -344,7 +344,10 @@ All movements are logged in the Stock Ledger ✅
 
 | Name | Role |
 |------|------|
-| [Will be added soon] | [Will be added soon] |
+| Het Vyas |	Backend Development, API Architecture, and Version Control |
+| Kinjalba Vaghela |	Database Design and Management |
+| Pooja Adhiya |	Frontend Development and Interface Design |
+| Shashank |	Frontend Development and Interface Design |
 
 ---
 
