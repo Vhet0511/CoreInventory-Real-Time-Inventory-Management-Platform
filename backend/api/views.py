@@ -6,6 +6,8 @@ import random
 from datetime import timedelta
 from django.utils import timezone
 from .models import Users, PasswordResetOtp
+from django.db.models import Count
+from .models import Receipts, Deliveries
 
 @api_view(['POST'])
 def register(request):
@@ -103,3 +105,26 @@ def confirm_password_reset(request):
     except PasswordResetOtp.DoesNotExist:
         return Response({"error": "invalid OTP"})
 
+@api_view(['GET'])
+def dashboard_summary(request):
+
+    receipts_to_receive = Receipts.objects.filter(status="pending").count()
+
+    total_receipts = Receipts.objects.count()
+
+    deliveries_to_deliver = Deliveries.objects.filter(status="pending").count()
+
+    total_deliveries = Deliveries.objects.count()
+
+    return Response({
+        "receipts": {
+            "to_receive": receipts_to_receive,
+            "total_operations": total_receipts
+        },
+        "deliveries": {
+            "to_deliver": deliveries_to_deliver,
+            "total_operations": total_deliveries
+        }
+    })
+
+    

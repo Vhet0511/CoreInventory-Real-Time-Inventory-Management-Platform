@@ -96,7 +96,7 @@
       margin-bottom: 28px;
     }
 
-    /* ── 3 OPERATION CARDS ── */
+    /* ── OPERATION CARDS ── */
     .ops-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -117,15 +117,17 @@
       position: relative;
       overflow: hidden;
     }
+
     .op-card::before {
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0;
       height: 3px;
     }
+
     .op-card.receipt::before  { background: #dc2626; }
     .op-card.delivery::before { background: #16a34a; }
-    .op-card.adjust::before   { background: #1a56db; }
+    .op-card.product::before  { background: #1a56db; }
 
     .op-card:hover {
       transform: translateY(-3px);
@@ -140,9 +142,10 @@
       font-size: 20px;
       margin-bottom: 14px;
     }
-    .op-icon.red   { background: #fef2f2; }
+
+    .op-icon.red { background: #fef2f2; }
     .op-icon.green { background: #f0fdf4; }
-    .op-icon.blue  { background: #eff6ff; }
+    .op-icon.blue { background: #eff6ff; }
 
     .op-name {
       font-size: 15px;
@@ -150,30 +153,13 @@
       color: #1e3a5f;
       margin-bottom: 5px;
     }
+
     .op-desc {
       font-size: 13px;
       color: #6b7280;
       line-height: 1.5;
       margin-bottom: 16px;
     }
-
-    .op-stats {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .op-stat {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 12px;
-      font-weight: 600;
-      padding: 3px 9px;
-      border-radius: 20px;
-    }
-    .op-stat.ready { background: #eff6ff; color: #1a56db; border: 1px solid #bfdbfe; }
-    .op-stat.late  { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
-    .op-stat.wait  { background: #fefce8; color: #92400e; border: 1px solid #fde68a; }
 
     .op-arrow {
       position: absolute;
@@ -182,9 +168,12 @@
       color: #bfdbfe;
       transition: color 0.14s, transform 0.14s;
     }
-    .op-card:hover .op-arrow { color: #1a56db; transform: translateX(3px); }
 
-    /* ── INFO BOX ── */
+    .op-card:hover .op-arrow {
+      color: #1a56db;
+      transform: translateX(3px);
+    }
+
     .info-box {
       margin-top: 32px;
       max-width: 900px;
@@ -196,38 +185,30 @@
       color: #374151;
       line-height: 1.7;
     }
-    .info-box strong { color: #1a56db; }
-    .info-box .ref-format {
-      font-family: 'DM Mono', monospace;
-      font-size: 12.5px;
-      background: #f0f4ff;
-      padding: 8px 12px;
-      border-radius: 6px;
-      margin-top: 8px;
-      display: inline-block;
-      color: #1e3a5f;
-    }
 
     @media (max-width: 700px) {
       .ops-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
+
 <body>
 
 <header>
   <nav>
     <a href="dashboard.html">Dashboard</a>
+
     <div class="nav-dropdown">
       <a href="operations.html" class="active">Operations</a>
       <div class="dropdown-menu">
         <a href="receipt.html">Receipt</a>
         <a href="delivery.html">Delivery</a>
-        <a href="adjustment.html">Adjustment</a>
       </div>
     </div>
+
     <a href="stock.html">Stock</a>
     <a href="move-history.html">Move History</a>
+
     <div class="nav-dropdown">
       <a href="#">Settings</a>
       <div class="dropdown-menu">
@@ -236,12 +217,14 @@
       </div>
     </div>
   </nav>
+
   <div class="avatar">A</div>
 </header>
 
 <main>
+
   <div class="page-title">Operations</div>
-  <div class="page-sub">Select an operation type to view or create records</div>
+  <div class="page-sub">Choose an action to perform in the inventory system</div>
 
   <div class="ops-grid">
 
@@ -249,11 +232,7 @@
     <a href="receipt.html" class="op-card receipt">
       <div class="op-icon red">📥</div>
       <div class="op-name">Receipt</div>
-      <div class="op-desc">Incoming stock from vendors into warehouse locations.</div>
-      <div class="op-stats">
-        <span class="op-stat ready">4 Ready</span>
-        <span class="op-stat late">1 Late</span>
-      </div>
+      <div class="op-desc">Record incoming stock received from suppliers.</div>
       <span class="op-arrow">→</span>
     </a>
 
@@ -261,39 +240,24 @@
     <a href="delivery.html" class="op-card delivery">
       <div class="op-icon green">📤</div>
       <div class="op-name">Delivery</div>
-      <div class="op-desc">Outgoing stock from warehouse to customers or vendors.</div>
-      <div class="op-stats">
-        <span class="op-stat ready">4 Ready</span>
-        <span class="op-stat late">1 Late</span>
-        <span class="op-stat wait">2 Waiting</span>
-      </div>
+      <div class="op-desc">Send products from warehouse to customers.</div>
       <span class="op-arrow">→</span>
     </a>
 
-    <!-- Adjustment -->
-    <a href="adjustment.html" class="op-card adjust">
-      <div class="op-icon blue">✏️</div>
-      <div class="op-name">Adjustment</div>
-      <div class="op-desc">Correct stock quantities without a receipt or delivery.</div>
-      <div class="op-stats">
-        <span class="op-stat ready">0 Pending</span>
-      </div>
+    <!-- Add Product -->
+    <a href="add-product.html" class="op-card product">
+      <div class="op-icon blue">📦</div>
+      <div class="op-name">Add Product</div>
+      <div class="op-desc">Create a new product in the inventory catalog.</div>
       <span class="op-arrow">→</span>
     </a>
 
   </div>
 
-  <!-- Reference format info -->
   <div class="info-box">
-    <strong>Reference Format:</strong> &nbsp;
-    <code class="ref-format">&lt;Warehouse&gt; / &lt;Operation&gt; / &lt;ID&gt;</code>
-    <br><br>
-    Examples:
-    <code class="ref-format" style="color:#dc2626">WH/IN/0001</code> — Receipt (IN) &nbsp;·&nbsp;
-    <code class="ref-format" style="color:#16a34a">WH/OUT/0001</code> — Delivery (OUT)
-    <br><br>
-    ID is <strong>auto-incremented</strong> and unique per operation type.
+    <strong>Tip:</strong> Use these operations to manage stock flow and product catalog in the warehouse system.
   </div>
+
 </main>
 
 </body>
