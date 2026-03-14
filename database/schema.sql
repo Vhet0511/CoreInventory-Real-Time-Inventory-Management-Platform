@@ -1216,4 +1216,3 @@ ALTER TABLE ONLY public.warehouses
 --
 
 \unrestrict c5d6k5SIcJgoHmbZlLJ9fE2DcQd3LDPx14PwXkd6aLzeiElgs9nCCAnxK8mUaRH
-
