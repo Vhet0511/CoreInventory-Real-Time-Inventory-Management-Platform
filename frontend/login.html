@@ -77,22 +77,42 @@
     </div>
 
     <script>
-        // Simple demo logic for the hackathon presentation
-        document.getElementById('loginForm').addEventListener('submit', function (e) {
-            e.preventDefault();
+    document.getElementById("loginForm").addEventListener("submit", async function(e){
+    e.preventDefault();
 
-            const loginId = document.getElementById('loginId').value;
-            const passwordVal = document.getElementById('password').value;
-            const errorAlert = document.getElementById('errorAlert');
+    const name = document.getElementById("loginId").value
+    const password = document.getElementById("password").value
+    const errorAlert = document.getElementById("errorAlert")
 
-            if (loginId === 'admin' && passwordVal === 'password') {
-                errorAlert.classList.replace('d-block', 'd-none');
-                alert('Success! Routing to Dashboard...');
-                // window.location.href = 'dashboard.html';
-            } else {
-                errorAlert.classList.replace('d-none', 'd-block');
-            }
-        });
+    try{
+        const response = await fetch("http://127.0.0.1:8000/api/login/",{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+                name:name,
+                email:name,
+                password:password
+            })
+        })
+
+        const data = await response.json()
+
+        if(response.ok){
+            alert("Login successful")
+            localStorage.setItem("user",JSON.stringify(data))
+            window.location.href="dashboard.html"
+        }else{
+            errorAlert.innerText=data.message || "Login failed"
+            errorAlert.classList.replace("d-none","d-block")
+        }
+
+    }catch(error){
+        console.log(error)
+        alert("Server error")
+    }
+})
     </script>
 </body>
 

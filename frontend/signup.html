@@ -156,41 +156,50 @@
         setupPasswordToggle('toggleConfirmPassword', 'confirmPassword');
 
         // --- Hackathon(Odoo) Form Validation Logic ---
-        document.getElementById('signupForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            console.log("Validating signup credentials...");
+        document.getElementById("signupForm").addEventListener("submit", async function(e){
 
-            const loginId = document.getElementById('loginId').value;
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            const errorAlert = document.getElementById('errorAlert');
+    e.preventDefault()
 
-            // Complex password regex check as per pass requirements
-            const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])/;
+    const name=document.getElementById("loginId").value
+    const email=document.getElementById("emailId").value
+    const password=document.getElementById("password").value
+    const confirmPassword=document.getElementById("confirmPassword").value
 
-            errorAlert.classList.add('d-none');
+    if(password!==confirmPassword){
+        alert("Passwords do not match")
+        return
+    }
 
-            if (loginId.length < 6 || loginId.length > 12) {
-                showError("Login ID must be between 6 and 12 characters.");
-                return;
-            }
-            if (password.length <= 8) {
-                showError("Password length must be more than 8 characters.");
-                return;
-            }
-            if (!passwordPattern.test(password)) {
-                showError("Password must contain a lowercase letter, an uppercase letter, and a special character.");
-                return;
-            }
-            if (password !== confirmPassword) {
-                showError("Passwords do not match.");
-                return;
-            }
+    try{
 
-            console.log("Frontend validation passed. Ready for Django API.");
-            alert('Success! Registration complete.');
-            // window.location.href = 'login.html';
-        });
+        const response=await fetch("http://127.0.0.1:8000/api/register/",{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+                name:name,
+                email:email,
+                password:password,
+                role:"manager"
+            })
+        })
+
+        const data=await response.json()
+
+        if(response.ok){
+            alert("Registration successful")
+            window.location.href="login.html"
+        }else{
+            alert(data.message || "Registration failed")
+        }
+
+    }catch(error){
+        console.log(error)
+        alert("Server error")
+    }
+
+})
 
         function showError(msg) {
             console.warn("Validation Error:", msg);

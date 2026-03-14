@@ -84,7 +84,6 @@
             letter-spacing: 0.5rem;
             text-align: center;
             font-size: 1.2rem;
-            fw-bold;
         }
     </style>
 </head>
@@ -158,88 +157,111 @@
     </div>
 
     <script>
-        // --- UX Feature: Toggle Password Visibility ---
-        function setupPasswordToggle(toggleId, inputId) {
-            const toggleIcon = document.getElementById(toggleId);
-            const inputField = document.getElementById(inputId);
+ function setupPasswordToggle(toggleId,inputId){
 
-            toggleIcon.addEventListener('click', function () {
-                const type = inputField.getAttribute('type') === 'password' ? 'text' : 'password';
-                inputField.setAttribute('type', type);
-                this.classList.toggle('bi-eye');
-                this.classList.toggle('bi-eye-slash');
-            });
-        }
+const toggleIcon=document.getElementById(toggleId)
+const inputField=document.getElementById(inputId)
 
-        setupPasswordToggle('toggleNewPassword', 'newPassword');
-        setupPasswordToggle('toggleConfirmPassword', 'confirmPassword');
+toggleIcon.addEventListener("click",function(){
 
-        // --- UX Feature: Resend OTP Timer ---
-        document.getElementById('resendLink').addEventListener('click', function (e) {
-            e.preventDefault();
-            const link = this;
-            const timerText = document.getElementById('timerText');
+const type=inputField.getAttribute("type")==="password"?"text":"password"
 
-            if (link.style.pointerEvents === 'none') return; // Prevent spam clicking
+inputField.setAttribute("type",type)
 
-            console.log("Requesting new OTP...");
-            alert("A new OTP has been sent to your email.");
+this.classList.toggle("bi-eye")
+this.classList.toggle("bi-eye-slash")
 
-            link.style.pointerEvents = 'none';
-            link.classList.add('text-muted');
-            timerText.classList.remove('d-none');
+})
 
-            let timeLeft = 30;
-            const timer = setInterval(() => {
-                timeLeft--;
-                timerText.innerText = `(Wait ${timeLeft}s)`;
-                if (timeLeft <= 0) {
-                    clearInterval(timer);
-                    link.style.pointerEvents = 'auto';
-                    link.classList.remove('text-muted');
-                    timerText.classList.add('d-none');
-                    timerText.innerText = '(Wait 30s)';
-                }
-            }, 1000);
-        });
+}
 
-        // --- Form Validation & Loading State ---
-        document.getElementById('verifyOtpForm').addEventListener('submit', function (e) {
-            e.preventDefault();
+setupPasswordToggle("toggleNewPassword","newPassword")
+setupPasswordToggle("toggleConfirmPassword","confirmPassword")
 
-            const btn = document.getElementById('verifyBtn');
-            const otp = document.getElementById('otpCode').value;
-            const pass1 = document.getElementById('newPassword').value;
-            const pass2 = document.getElementById('confirmPassword').value;
-            const errorAlert = document.getElementById('errorAlert');
+document.getElementById("verifyOtpForm").addEventListener("submit",async function(e){
 
-            errorAlert.classList.add('d-none');
+e.preventDefault()
 
-            // 1. Basic Validation
-            if (otp.length !== 6 || isNaN(otp)) {
-                showError("Please enter a valid 6-digit OTP.");
-                return;
-            }
-            if (pass1 !== pass2) {
-                showError("New passwords do not match.");
-                return;
-            }
+const btn=document.getElementById("verifyBtn")
+const otp=document.getElementById("otpCode").value
+const pass1=document.getElementById("newPassword").value
+const pass2=document.getElementById("confirmPassword").value
+const errorAlert=document.getElementById("errorAlert")
 
-            // 2. Simulated Loading State
-            btn.disabled = true;
-            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Verifying...';
+const email=localStorage.getItem("reset_email")
 
-            setTimeout(() => {
-                alert('Success! Your password has been securely reset. Routing to login...');
-                window.location.href = 'login.html'; // Redirect to login
-            }, 2000);
-        });
+errorAlert.classList.add("d-none")
 
-        function showError(msg) {
-            const errorAlert = document.getElementById('errorAlert');
-            errorAlert.innerText = msg;
-            errorAlert.classList.replace('d-none', 'd-block');
-        }
+if(otp.length!==6 || isNaN(otp)){
+showError("Enter a valid 6 digit OTP")
+return
+}
+
+if(pass1!==pass2){
+showError("Passwords do not match")
+return
+}
+
+btn.disabled=true
+btn.innerHTML="Verifying..."
+
+try{
+
+const response=await fetch("http://127.0.0.1:8000/api/password-reset/confirm/",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+email:email,
+otp:otp,
+new_password:pass1
+})
+
+})
+
+const data=await response.json()
+
+if(response.ok){
+
+alert("Password updated successfully")
+
+localStorage.removeItem("reset_email")
+
+window.location.href="login.html"
+
+}else{
+
+showError(data.message || "OTP verification failed")
+
+btn.disabled=false
+btn.innerHTML="VERIFY & RESET"
+
+}
+
+}catch(error){
+
+showError("Server error")
+
+btn.disabled=false
+btn.innerHTML="VERIFY & RESET"
+
+}
+
+})
+
+function showError(msg){
+
+const errorAlert=document.getElementById("errorAlert")
+
+errorAlert.innerText=msg
+
+errorAlert.classList.replace("d-none","d-block")
+
+}
     </script>
 </body>
 
